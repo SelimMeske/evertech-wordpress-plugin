@@ -3,7 +3,7 @@
 /*
  Plugin Name:       EverTech Price Ui
  Description:       Custom price tag for EverTech d.o.o.
- Version:           1.0.0
+ Version:           1.0.1
  Requires at least: 5.2
  Author:            Mesic Selim
  License:           GPL v2 or later

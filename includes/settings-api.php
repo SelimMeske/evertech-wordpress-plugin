@@ -9,8 +9,6 @@ class EdPriceUiSettingsApi {
     add_action('admin_init', array($this, 'createCustomFields'));
   }
 
-
-
   function getWooProducts(){
     $query = new WC_Product_Query( array(
       'return' => 'ids'
@@ -25,14 +23,27 @@ class EdPriceUiSettingsApi {
 
     add_settings_section('ed_section', 'Product', array($this, 'admin_section_callback'), 'ed_price');
 
+    //Style and title label sections and fields...
     add_settings_section('ed_section_style', 'Style', array($this, 'admin_section_callback'), 'ed_price');
-
+    //Button...
     add_settings_field('ed_ui_background_color', 'Button Color', array($this, 'colorCallback'), 'ed_price', 'ed_section_style', array(
       'label_for' => 'ed_ui_background_color',
       'class' => 'ed-ui-dummy-button-input'
     ));
+    //Small circle...
+    add_settings_field('ed_ui_circle_color', 'Circle Color', array($this, 'circColorCallback'), 'ed_price', 'ed_section_style', array(
+      'label_for' => 'ed_ui_circle_color',
+      'class' => 'ed-ui-dummy-circle-input'
+    ));
+    //Title...
+    add_settings_field('ed_ui_title', 'Title Above Buttons', array($this, 'titleCallback'), 'ed_price', 'ed_section_style', array(
+      'label_for' => 'ed_ui_title',
+      'class' => 'ed-ui-dummy-title-input'
+    ));
 
     register_setting('ed_settings', 'ed_ui_background_color');
+    register_setting('ed_settings', 'ed_ui_circle_color');
+    register_setting('ed_settings', 'ed_ui_title');
 
     foreach($this->getWooProducts() as $product) {
 
@@ -61,6 +72,16 @@ class EdPriceUiSettingsApi {
   function colorCallback($args){
     $options = get_option($args['label_for']);
     echo '<input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-button" style="margin-left: 20px; display: inline;">24.99 km/kom</p>';
+  }
+  function circColorCallback($args){
+    $options = get_option($args['label_for']);
+    echo '<div style="display: flex;"><input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-circle" style="margin-left: 20px;">2x</p></div>';
+  }
+
+  function titleCallback($args){
+    $options = get_option($args['label_for']);
+    echo '<textarea cols=50 name="'.$args['label_for'].'"  type="textarea" value="" placeholder="">'.$options.'</textarea>';
+    echo '<p><em>This custom field will be available in version 1.0.2.</em></p>';
   }
 
   function admin_section_callback(){

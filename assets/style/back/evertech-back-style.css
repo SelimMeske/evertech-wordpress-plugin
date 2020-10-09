@@ -82,9 +82,19 @@
   -ms-user-select: none;
   user-select: none;
 }
-
 .dummy-button:hover {
   color: #F42C37;
   background: white !important;
   border-color: #F42C37;
+}
+.dummy-circle {
+  font-size: 15px;
+  border-radius: 100%;
+  background: #00A7E1;
+  color: white;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
