@@ -17,12 +17,11 @@ jQuery(document).ready(function() {
 
   //Simulate hover for dummy...
   dummyButton.addEventListener('mouseenter', () => {
-    dummyButton.style.setProperty('color', dummyButtonColor, 'important');
-    console.log(dummyButtonColor)
+    currentColor = window.getComputedStyle(dummyButton).backgroundColor;
+    dummyButton.style.setProperty('color', currentColor, 'important');
   });
   dummyButton.addEventListener('mouseleave', () => {
     dummyButton.style.setProperty('color', 'white', 'important');
-    console.log(dummyButtonColor)
   });
 
   dummyButtonInput.addEventListener('input', (e) => {

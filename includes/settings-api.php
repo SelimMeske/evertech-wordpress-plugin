@@ -1,10 +1,15 @@
 <?php
 
+require_once ED_PRICE_PLUGIN_PATH . 'includes/enqueue.php';
+
 class EdPriceUiSettingsApi {
+
   function init(){
     add_action('admin_menu', array($this, 'createAdminPage'));
     add_action('admin_init', array($this, 'createCustomFields'));
   }
+
+
 
   function getWooProducts(){
     $query = new WC_Product_Query( array(
@@ -63,7 +68,22 @@ class EdPriceUiSettingsApi {
   }
 
   function createAdminPage(){
-    add_menu_page('evertech_price_ui', 'EverTech Price Ui', 'manage_options', 'evertech_ui', array($this, 'admin_template'), ED_PRICE_PLUGIN_URL . 'assets/images/ever.png');
+    $adminPg = add_menu_page('evertech_price_ui', 'EverTech Price Ui', 'manage_options', 'evertech_ui', array($this, 'admin_template'), ED_PRICE_PLUGIN_URL . 'assets/images/ever.png');
+
+    add_action('load-' . $adminPg, array($this, 'initOnAdmin'));
+  }
+
+  function initOnAdmin(){
+    add_action('admin_enqueue_scripts', array($this, 'enqueue_back_script'));
+    add_action('admin_enqueue_scripts', array($this, 'enqueue_back_styles'));
+  }
+
+  function enqueue_back_script(){
+    wp_enqueue_script('ed-price-ui-back-script', ED_PRICE_PLUGIN_URL . 'assets/js/back/evertech-back-script.js', [], time());
+  }
+
+  function enqueue_back_styles(){
+    wp_enqueue_style('ed-price-ui-back-style', ED_PRICE_PLUGIN_URL . 'assets/style/back/evertech-back-style.css', [], time());
   }
 
   function admin_template(){

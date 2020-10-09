@@ -4,6 +4,9 @@ class ContentHandler{
   function init(){
     add_action('wp_ajax_manipulator', array($this, 'contentManipulator'));
     add_action('wp_ajax_nopriv_manipulator', array($this, 'contentManipulator'));
+
+    add_action('wp_ajax_gi', array($this, 'setStyle'));
+    add_action('wp_ajax_nopriv_gi', array($this, 'setStyle'));
   }
 
   function contentManipulator(){

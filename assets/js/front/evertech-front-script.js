@@ -1,6 +1,20 @@
 console.log('Front script loaded...');
 
 jQuery(document).ready(function () {
+  (function ($) {
+       $.ajax({
+         url: jsforwp_globals.ajax_url,
+         data: {
+           action: 'gi'
+         },
+         method: 'GET',
+         success: function(response) {
+           console.log(response)
+         },
+         error: function(err) {console.log(err)}
+       })
+      })(jQuery)
+
      let product = document.querySelector('.product .summary');
      let data = product.parentNode.id.replace('product-', '');
      if(product){
@@ -15,6 +29,7 @@ jQuery(document).ready(function () {
                 method: 'POST',
                 success: function(response) {
                   let prices = response.split(',');
+
                   createUiEd(prices[0], prices[1], prices[2], prices[3], prices[4], prices[5]);
                 },
                 error: function(err) {console.log(err)}
@@ -61,9 +76,9 @@ function createUiEd(price1, price2, price3, q1, q2, q3){
   child3.append(pTag3);
   child3.append(costTag3);
 
-  pTag.innerHTML = price1 + ' km/kom';
-  pTag2.innerHTML = price2 + ' km/kom';
-  pTag3.innerHTML = price3 + ' km/kom';
+  pTag.innerHTML = price1 + ' km';
+  pTag2.innerHTML = price2 + ' km';
+  pTag3.innerHTML = price3 + ' km';
   costTag.innerHTML = q1 + 'x';
   costTag2.innerHTML = q2 + 'x';
   costTag3.innerHTML = q3 + 'x';
