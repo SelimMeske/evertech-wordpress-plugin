@@ -49,11 +49,20 @@ jQuery(document).ready(function() {
     let productInfo;
 
     let allInputs = allProductsParent[i].querySelectorAll('input');
-    console.log(allProducts[i]);
     for(let p = 0; p < allInputs.length; p++) {
-      allInputs[p].addEventListener('input', () => {
-        productInfo = allInputs[0].value.replace(',', '.') + ',' + allInputs[2].value.replace(',', '.')+ ',' +allInputs[4].value.replace(',', '.')+ ',' +allInputs[1].value.replace(',', '.')+ ',' +allInputs[3].value.replace(',', '.')+ ',' +allInputs[5].value.replace(',', '.');
-        allInputs[6].setAttribute('value', productInfo);
+      allInputs[p].addEventListener('input', (e) => {
+        let checkboxes = [allInputs[2], allInputs[5], allInputs[8]];
+        let checkboxValue;
+        if(e.target.type === 'checkbox'){
+          checkboxValue = e.target.value;
+          for(let i = 0; i < checkboxes.length; i++) {
+            if(checkboxes[i] !== e.target) {
+              checkboxes[i].checked = false;
+            }
+          }
+        }
+        productInfo = allInputs[0].value.replace(',', '.') + ',' + allInputs[3].value.replace(',', '.')+ ',' +allInputs[6].value.replace(',', '.')+ ',' +allInputs[1].value.replace(',', '.')+ ',' +allInputs[4].value.replace(',', '.')+ ',' +allInputs[7].value.replace(',', '.') + ',' + checkboxValue;
+        allInputs[9].setAttribute('value', productInfo);
       });
     }
   }

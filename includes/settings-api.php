@@ -53,7 +53,7 @@ class EdPriceUiSettingsApi {
         ));
 
         if(get_option('ed_product_' . $product) == false) {
-          add_option('ed_product_' . $product, "98.99,99.99,99.99,2,3,6");
+          add_option('ed_product_' . $product, "98.99,99.99,99.99,2,3,6,1");
         }
         register_setting('ed_settings', 'ed_product_' . $product);
       }
@@ -62,9 +62,12 @@ class EdPriceUiSettingsApi {
   function inputCallback($args){
     $options = get_option('ed_product_' . $args['label_for']);
     $splited = explode(',', $options);
-    echo '<div class="ed-wrap-input"><p><strong>Price 1</strong></p><input type="text" value="'.$splited[0].'" placeholder="Enter your price."><input type="text" value="'.$splited[3].'" placeholder="Quantity?"></div>';
-    echo '<div class="ed-wrap-input"><p><strong>Price 2</strong></p><input type="text" value="'.$splited[1].'" placeholder="Enter your price."><input type="text" value="'.$splited[4].'" placeholder="Quantity?"></div>';
-    echo '<div class="ed-wrap-input"><p><strong>Price 3</strong></p><input type="text" value="'.$splited[2].'" placeholder="Enter your price."><input type="text" value="'.$splited[5].'" placeholder="Quantity?"></div>';
+    if(array_key_exists(6, $splited) == false){
+      array_push($splited, 3);
+    }
+    echo '<div class="ed-wrap-input"><p><strong>Price 1</strong></p><input type="text" value="'.$splited[0].'" placeholder="Enter your price."><input type="text" value="'.$splited[3].'" placeholder="Quantity?"><div class="top-price"><input value="1" '. checked( 1, $splited[6], false ) .'type="checkbox"><label>Top Price?</label></div></div>';
+    echo '<div class="ed-wrap-input"><p><strong>Price 2</strong></p><input type="text" value="'.$splited[1].'" placeholder="Enter your price."><input type="text" value="'.$splited[4].'" placeholder="Quantity?"><div class="top-price"><input value="2" '. checked( 2, $splited[6], false ) .'type="checkbox"><label>Top Price?</label></div></div>';
+    echo '<div class="ed-wrap-input"><p><strong>Price 3</strong></p><input type="text" value="'.$splited[2].'" placeholder="Enter your price."><input type="text" value="'.$splited[5].'" placeholder="Quantity?"><div class="top-price"><input value="3" '. checked( 3, $splited[6], false ) .'type="checkbox"><label>Top Price?</label></div></div>';
     echo '<input name="'.'ed_product_' . $args['label_for'].'" type="hidden" value="'.$options.'" placeholder="">';
     echo '<div class="close-ed-product">Save</div>';
   }
@@ -73,7 +76,7 @@ class EdPriceUiSettingsApi {
     $options = get_option($args['label_for']);
     echo '<input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-button" style="margin-left: 20px; display: inline;">24.99 KM</p>';
   }
-  
+
   function circColorCallback($args){
     $options = get_option($args['label_for']);
     echo '<div style="display: flex;"><input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-circle" style="margin-left: 20px;">2x</p></div>';
@@ -82,7 +85,6 @@ class EdPriceUiSettingsApi {
   function titleCallback($args){
     $options = get_option($args['label_for']);
     echo '<textarea cols=50 name="'.$args['label_for'].'"  type="textarea" value="" placeholder="">'.$options.'</textarea>';
-    echo '<p><em>This custom field will be available in version 1.0.2.</em></p>';
   }
 
   function admin_section_callback(){

@@ -38,19 +38,49 @@ jQuery(document).ready(function () {
                 success: function(response) {
                   let prices = response.prices.split(',');
                   createUiEd(prices[0], prices[1], prices[2], prices[3], prices[4], prices[5], response.title);
+                  let topPrice = +prices[6] - 1;
+                  initAnimations(prices[6]);
+
+                  let allButtons = document.querySelectorAll('.ed-ui-holder');
+
+                  for(let p = 0; p < allButtons.length; p++) {
+
+                    allButtons[p].addEventListener('mouseenter', (e) => {
+                      e.target.style.animationDuration = '0s';
+                      console.log(allButtons[p].style.animationName)
+                    });
+                    allButtons[p].addEventListener('mouseleave', (e) => {
+
+                      if(e.target.classList.contains('active-o')){
+                        e.target.style.animationDuration = '0s';
+                      }else{
+                        e.target.style.animationDuration = '10s';
+                      }
+                    });
+                    allButtons[p].addEventListener('click', (e) => {
+                      for(let i = 0; i < allButtons.length; i++) {
+                        if(allButtons[i].classList.contains('active-o')){
+                          allButtons[i].style.animationDuration = '0s';
+                        }else {
+                          allButtons[i].style.animationDuration = '10s';
+                        }
+                      }
+                    });
+                  }
                 },
                 error: function(err) {console.log(err)}
               })
         })(jQuery)
      }
+
 });
 
-function initStyle(buttonColor, circleColor){
+function initStyle(buttonColor, circleColor, topPrice){
   let dynamicStyle = document.createElement('style');
   dynamicStyle.innerHTML = `
   .ed-ui-holder {
     background: ${buttonColor};
-    color: white !important;
+    color: white;
     border-color: ${buttonColor};
   }
   .active-o {
@@ -68,6 +98,32 @@ function initStyle(buttonColor, circleColor){
   }
   `;
   document.body.append(dynamicStyle);
+}
+
+function initAnimations(topPrice){
+    let dynamicStyle = document.createElement('style');
+    dynamicStyle.innerHTML = `
+    .ed-ui-holder:nth-child(${topPrice}){
+      animation: topPriceAni 10s infinite;
+    }
+    @keyframes disAni {
+
+    }
+    @keyframes topPriceAni {
+      0%{transform: scale(1);}
+      4.5%{transform: scale(1.3); background-color: #FFD700; border-color: #FFD700;}
+      5%{transform: rotate(10deg) scale(1.3);}
+      5.5%{transform: rotate(0deg) scale(1.3);}
+      6%{transform: rotate(-10deg) scale(1.3);}
+      6.5%{transform: rotate(0deg) scale(1.3);}
+      7%{transform: rotate(10deg) scale(1.3);}
+      7.5%{transform: rotate(0deg) scale(1.3);}
+      8%{transform: rotate(-10deg) scale(1.3); }
+      8.5%{transform: rotate(0deg) scale(1.3); background-color: #FFD700; border-color: #FFD700;}
+      14.5%{transform: scale(1); background-color: #F42C37; border-color: #F42C37;}
+    }
+    `;
+    document.body.append(dynamicStyle);
 }
 
 function createUiEd(price1, price2, price3, q1, q2, q3, titleText){
