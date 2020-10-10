@@ -71,8 +71,9 @@ class EdPriceUiSettingsApi {
 
   function colorCallback($args){
     $options = get_option($args['label_for']);
-    echo '<input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-button" style="margin-left: 20px; display: inline;">24.99 km/kom</p>';
+    echo '<input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-button" style="margin-left: 20px; display: inline;">24.99 KM</p>';
   }
+  
   function circColorCallback($args){
     $options = get_option($args['label_for']);
     echo '<div style="display: flex;"><input name="'.$args['label_for'].'" type="text" value="'.$options.'" placeholder=""><p class="dummy-circle" style="margin-left: 20px;">2x</p></div>';

@@ -9,14 +9,14 @@ jQuery(document).ready(function () {
   (function ($) {
        $.ajax({
          url: jsforwp_globals.ajax_url,
+         contentType: "application/json",
          data: {
            action: 'style'
          },
          method: 'GET',
          success: function(response) {
-           let responseData = response.split(',');
-           buttonColor = responseData[0];
-           circleColor = responseData[1];
+           buttonColor = response.bcgcolor;
+           circleColor = response.circlecolor;
            initStyle(buttonColor, circleColor);
          },
          error: function(err) {console.log(err)}
@@ -36,8 +36,8 @@ jQuery(document).ready(function () {
                 },
                 method: 'POST',
                 success: function(response) {
-                  let prices = response.split(',');
-                  createUiEd(prices[0], prices[1], prices[2], prices[3], prices[4], prices[5]);
+                  let prices = response.prices.split(',');
+                  createUiEd(prices[0], prices[1], prices[2], prices[3], prices[4], prices[5], response.title);
                 },
                 error: function(err) {console.log(err)}
               })
@@ -134,7 +134,7 @@ function createUiEd(price1, price2, price3, q1, q2, q3, titleText){
     inputF.value = q1;
   });
 
-  titleTag.innerHTML = '<strong>Uštedite kupovinom više od jednog artikla!</strong>';
+  titleTag.innerHTML = '<strong>'+titleText+'</strong>';
   titleTag.style.marginTop = '30px';
   titleTag.classList.add('ed-ui-title-text');
 
