@@ -13,5 +13,6 @@ class EdPriceUiEnqueue{
   function enqueue_front_script(){
     wp_enqueue_script('ed-price-ui-front-script', ED_PRICE_PLUGIN_URL . 'assets/js/front/evertech-front-script.js', array( 'jquery'), time());
     wp_localize_script( 'ed-price-ui-front-script', 'jsforwp_globals', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+    wp_enqueue_script('countdown-js', ED_PRICE_PLUGIN_URL . 'libs/jquery.countdown.js', array( 'jquery'), time());
   }
 }

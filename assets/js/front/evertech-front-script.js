@@ -67,6 +67,7 @@ jQuery(document).ready(function () {
                       }
                     });
                   }
+                  callTimer(createTheDate(1) + ' 12:00:00');
                 },
                 error: function(err) {console.log(err)}
               })
@@ -74,6 +75,60 @@ jQuery(document).ready(function () {
      }
 
 });
+
+function createTheDate(daysAhead){
+  let today = new Date(new Date().getTime() + (86400000 * daysAhead));
+  let dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  return today = yyyy + '/' + mm + '/' + dd;
+}
+
+function createDateForArrival(daysAhead){
+  let today = new Date(new Date().getTime() + (86400000 * daysAhead));
+  let dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  return today = dd + '/' + mm + '/' + yyyy;
+}
+
+function callTimer(dateObject){
+  let dani = {1:'Pon', 2:'Uto', 3:'Sri', 4:'Čet', 5:'Pet', 6:'Sub', 0:'Ned'};
+  let todaysDay = dani[new Date().getDay()];
+  let arrivalDay;
+  let createAhedDay = 2;
+  if(todaysDay === 'Sub'){
+    arrivalDay = 'Uto';
+    createAhedDay = 4;
+  }else {
+    arrivalDay = dani[new Date().getDay() + 2];
+  }
+  let dateObj = dateObject;
+  jQuery(".ed-ui-countdown").countdown(dateObject, function(event) {
+      if(event.elapsed){
+        let currentDay = dani[new Date().getDay()];
+
+        if(currentDay === 'Pet') {
+          callTimer(createTheDate(2) + ' 10:00:00');
+        }else if(currentDay === 'Sub'){
+          callTimer(createTheDate(4) + ' 12:00:00');
+        }else if(currentDay === 'Ned'){
+          callTimer(createTheDate(3) + ' 12:00:00');
+        }else {
+          callTimer(createTheDate(2) + ' 12:00:00');
+        }
+
+      }
+      var $this = jQuery(this).html(''
+        + '<div class="ed-col"><span>' + event.offset.totalHours + '</span><p>SATI</p></div>'
+        + '<div class="ed-col"><span>' + event.offset.minutes + '</span><p>MIN</p></div>'
+        + '<div class="ed-col"><span>' + event.offset.seconds + '</span><p>SEK</p></div>'
+      );
+    });
+  jQuery(".ed-ui-countdown").after('<p class="ed-ui-info">da robu dobijete na adresi najkasnije u <strong>' + arrivalDay + '. ' + createDateForArrival(createAhedDay) + '.</strong></p>');
+}
 
 function initStyle(buttonColor, circleColor, topPrice){
   let dynamicStyle = document.createElement('style');
@@ -149,7 +204,9 @@ function createUiEd(price1, price2, price3, q1, q2, q3, titleText){
   let costTag3 = document.createElement('p');
 
   let titleTag = document.createElement('p');
+  let countdownTimer = document.createElement('p');
 
+  countdownTimer.classList.add('ed-ui-countdown');
   costTag.classList.add('ed-ui-cost');
 
   child1.classList.add('ed-ui-holder');
@@ -200,6 +257,7 @@ function createUiEd(price1, price2, price3, q1, q2, q3, titleText){
 
   price.parentNode.insertBefore(customParent, price.nextSibling);
   price.parentNode.insertBefore(titleTag, price.nextSibling);
+  titleTag.parentNode.insertBefore(countdownTimer, titleTag.nextSibling);
 
   let allO = document.querySelectorAll('.ed-ui-holder');
   for(let i = 0; i < allO.length; i++) {
